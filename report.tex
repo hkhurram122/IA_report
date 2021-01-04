@@ -8,7 +8,7 @@
  left=20mm,
  top=20mm,
  }
-\usepackage{color}
+\usepackage{color}  
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -845,7 +845,7 @@ To scale up this process for 4600 training examples, I wrote Python code using t
     \item The loss function used was \codeword{mae} (mean absolute error), explained in the next section.
 \end{itemize}
 
-Additionally, the data was split into a shuffled training and validation set. This distinction is made on the basis of optimizing parameter values and the model selection, respectively. As detailed in the conclusion, the noise with the loss largely concerned with the former, simplified approach, is addressed by setting the \textbf{batch size} to be 15 rather than 1. This is the number of samples patched and processed at a time, before the weights and biases are updated. Also, the number of \textbf{epochs} is 400, which is the number of times the model trains on the data by passing through all examples in the data set. 
+Additionally, the data was split into a shuffled training and validation set. This distinction was made on the basis of optimizing parameter values and the model selection, respectively. As detailed in the conclusion, the noise with the loss largely concerned with the former, simplified approach, was addressed by setting the \textbf{batch size} to be 15 rather than 1. This is the number of samples patched and processed at a time, before the weights and biases were updated. Also, the number of \textbf{epochs} was 400, the number of times the model trained on the data by passing through all examples in the data set. 
 
 \begin{figure}[h]
     \centering
@@ -857,7 +857,7 @@ Additionally, the data was split into a shuffled training and validation set. Th
 
 \subsection{Results of the Neural Network}
 
-\textit{Matplotlib} was used to visualize the resulting loss in the training and validation data over 400 epochs. The figure above is purposed to model the changes in the value of the cost function, whereby the neural network becomes more ‘optimal’ through ‘learning’, or in computing each iteration to update weights and biases. This is represented by an instantly decreasing value of the cost function before converging. Notably, the rate of decrease of the cost function also decreases with the number of iterations.
+\textit{Matplotlib} was used to visualize the resulting loss in the training and validation data over 400 epochs. The figure above is purposed to model the changes in the value of the cost function, whereby the neural network becomes more ‘optimal’ through ‘learning’, or in computing each iteration to update weights and biases. This is represented by an initially rapidly decreasing value of the cost function before converging. One interesting result is the slight increase in the loss after about 30 iterations, before decreasing at a slower rate. Notably, the rate of decrease of the cost function also decreases with the number of epochs.
 
 \begin{verbatim}
 Epoch 400/400
@@ -889,15 +889,12 @@ Another metric is \codeword{"mae"}, or the mean absolute error cost function,
 
 In the second iteration of the original neural network, the changes to the weights and biases to layer (1) became more insignificant. Consistent with the result in equation (83), this problem in machine learning is known as ‘vanishing gradients’, where the increasing value of the weighted sum passed through the sigmoid activation function approaches an output of 1. This corresponds to where the horizontal asymptote (y = 1) in the sigmoid function lies. This means that there are decreased rates of change of the cost with respect to each of the weights and biases to layer (1). Eventually, the only significant adjustments to the weights and biases were for those linked to the output layer neuron (layer 2). 
 
-Moreover, the descent of the cost value would be ‘noisy’ due to stochastic (random) gradient descent. Greater ‘noise’, or a larger average spread of data (variance) from the mean cost value is expected with using this method. Single examples were randomly selected, and the values of the individual houses were not constant for the ‘training’ model. (Rocca, 2018) In the improved, \textbf{mini-batched gradient descent} algorithm whose result is shown in figure 7, the graph depicts minimal noise. However, as the loss converges to 177,000 [dollars$^2$] (the square of the final RMSE), the noise in the data begins to increase slightly. The model still vastly improves the representation of learning over varied housing price values being used. Here, the cost function is modified, as it is computed over $m=15$ shuffled training examples using equation (87).
+Moreover, the descent of the cost value would be ‘noisy’ due to stochastic (random) gradient descent. Greater noise, or a larger average spread of data (variance) from the mean cost value is expected in using this method involving single examples randomly selected. (Rocca, 2018) In the improved, \textbf{mini-batched gradient descent} algorithm whose result is shown in figure 7, the graph depicts minimal noise. However, as the loss converges to 177,000 [dollars$^2$] (the square of the final RMSE), the noise in the data begins to increase slightly. The model still vastly improves the representation of learning over varied housing price values being used. Here, the cost function is modified, as it is computed over $m=15$ shuffled training examples using equation (87).
 
 
 \section{Conclusion}
 
 \subsection{Limitations and Reflection}
-
-Thousands of training examples are typically used to train neural networks before feeding into the networks’ testing data and validation data (where weights and biases are fixed to hold back from training). Unlike the simplified example calculations iterating on single examples, multiple passes through training data are typically considered. With the \textit{Keras} and \textit{Tensorflow} module, the averages of each batch were taken before the cost function’s average for each batch was considered for updating the weights/biases. (Urtusan et al., 2015) This method was used to address the ‘noisy’ results of stochastic gradient descent. (Le, 2015)
-
 
 One concern with this algorithm is that the computed values for the negative gradients and the local minimum value of the cost function may differ from the global minimum, leaving the possibility of a more accurate model to map features to labels. This was caused by the randomization of the values of weights and biases in the first example before backpropagation. In the case of the mini-batch algorithm implementation, the continually decreasing result in figure 7 after 400 epochs may indicate under-fitting. The implementation of time-based learning rate schedules may address this result for faster training, where learning rates may decrease with epochs.
 
@@ -906,7 +903,7 @@ With the finalized weights and biases over 4600 training examples, my neural net
 
 
 \subsection{Beyond the Exploration}
-Software modules employing deep neural networks are rapidly emerging into various fields. The applications of linear algebra that stem from concepts of matrices and calculus coalesce as the backbone of AI, which vastly enhanced my knowledge and devotion for the wide-ranging field of data science. Software development may be utilized to include this search for homes and their prices in other cities, and similar ML models may be applied to data concerning a wide range of fields including medicine and computer vision.
+Software modules employing deep neural networks are rapidly emerging into various fields. The applications of linear algebra that stem from concepts of matrices and calculus coalesce as the backbone of AI, which vastly enhanced my knowledge and devotion for the wide-ranging field of data science. Software development may be utilized to include this search for homes and their prices in other cities, and more advanced ML models may be applied to data concerning a wide range of fields including medicine and computer vision.
 
 
 
