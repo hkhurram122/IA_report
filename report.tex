@@ -34,6 +34,9 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{xparse}
+\usepackage{graphicx,float}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
 
 
 \NewDocumentCommand{\codeword}{v}{%
@@ -670,8 +673,7 @@ Hence,
 
 
 \begin{equation}
-{\acute{b}}_0^{\left(2\right)}\ =\ b_0^{\left(2\right)}-\left(\eta\frac{\partial C}{\partial b_0^{\left(2\right)}}\right)
-{\acute{\mathbit{b}}}_\mathbf{0}^{\left(\mathbf{2}\right)}=\left[\mathbf{4805}.\mathbf{000}...\right] 
+{\acute{b}}_0^{\left(2\right)}\ =\ b_0^{\left(2\right)}-\left(\eta\frac{\partial C}{\partial b_0^{\left(2\right)}}\right)=\left[\mathbf{4805}.\mathbf{000}...\right] 
 \end{equation}
 
 \end{mybox1}
@@ -896,7 +898,7 @@ Moreover, the descent of the cost value would be ‘noisy’ due to stochastic (
 
 \subsection{Limitations and Reflection}
 
-One concern with this algorithm is that the computed values for the negative gradients and the local minimum value of the cost function may differ from the global minimum, leaving the possibility of a more accurate model to map features to labels. This was caused by the randomization of the values of weights and biases in the first example before backpropagation. In the case of the mini-batch algorithm implementation, the continually decreasing result in figure 7 after 400 epochs may indicate under-fitting. The implementation of time-based learning rate schedules may address this result for faster training, where learning rates may decrease with epochs.
+One concern with this algorithm is that the computed values for the negative gradients and the local minimum value of the cost function may differ from the global minimum, leaving the possibility of a more accurate model to map features to labels. This was caused by the randomization of the values of weights and biases in the first example before backpropagation. In the case of the mini-batch algorithm implementation, the continually decreasing result in figure 7 after 400 epochs may indicate under-fitting. The implementation of time-based learning rate schedules may address this result for faster training, where learning rates may decrease as training proceeds.
 
 
 With the finalized weights and biases over 4600 training examples, my neural net achieved the aim to both compute the cost values, which on average, decreased with successive iterations. Thus, the network gradually increased its accuracy at predicting housing prices relative to the initial model (before the first iteration). The model, however, excluded other parameters such as location, age, and condition. By the limitations posed by the availability of data, the model would not closely model the housing price of unseen housing data, as its loss converges to a relatively high RMSE value.
@@ -986,7 +988,7 @@ Software modules employing deep neural networks are rapidly emerging into variou
 \begin{appendices}
 
 \section{Code}
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true]
 import numpy as np 
 import pandas as pd
 import tensorflow as tf 
@@ -1059,7 +1061,7 @@ plt.ylabel('Loss: Mean Squared Error [Dollars$^2$]')
 plt.grid()
 plt.legend()
 plt.show()
+\end{Verbatim}[breaklines=true]
 
-\end{verbatim}
 \end{appendices}
 \end{document}
