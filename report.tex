@@ -15,8 +15,9 @@
     linktoc=all,     
     linkcolor=blue,  
 }
-\usepackage{amsmath}
+ \usepackage{amsmath}
 \usepackage{amssymb}
+
 \usepackage{tcolorbox}
 \usepackage[utf8]{gensymb}
 \usepackage{graphicx}
@@ -30,8 +31,18 @@
 \usepackage{wrapfig}
 \usepackage[title]{appendix}
 \usepackage{multicol}
-\usepackage{float}
- 
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xparse}
+
+
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{black}{#1}}%
+}
+
+\lstset{language=C,keywordstyle={\bfseries \color{black}}}
+
+
 \title{Introduction to Supervised Learning and Regression \\
  \large HL Mathematics IA}
 
@@ -237,6 +248,7 @@ a^{\left(1\right)}=\left[\begin{matrix}a_0^{\left(1\right)}\\a_1^{\left(1\right)
 
 
 However, the sigmoid activation function is not applied to the output layer, which is a continuous value of housing price. A linear “activation” function is instead used, such that the output, $a_0^{\left(2\right)}=z^{\left(2\right)}$, where $z^{\left(2\right)}$ is the weighted sum to the output layer neuron. Thus, the forward propagation equation to the layer (2) neuron is:
+
 
 \begin{equation}
 a^{\left(2\right)}=w^{(2)} \cdot a^{(1)}+b^{(2)}
@@ -751,7 +763,11 @@ Maintaining the same learning rate of \textbf{$\eta = 0.01$}, the following upda
 
 \begin{equation}
 	\frac{\partial C}{\partial\mathbf{b}_\mathbf{0}^{\left(\mathbf{1}\right)}}={(\mathbit{a}}_\mathbf{0}^{\left(\mathbf{2}\right)}-\mathbit{y})(\mathbit{w}_{\mathbf{00}}^{\left(\mathbf{2}\right)})\left(\mathbf{\sigma}\prime\left(\mathbf{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\right)\right)
-\mathbf{\sigma}^\prime\left(\mathbf{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\right)=\ \left(\frac{\mathbit{e}^{-\mathbit{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\ }}{\left(\mathbf{1}+\mathbit{e}^{-\mathbit{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\ }\right)^\mathbf{2}}\right)\ \ =\ \mathbf{0}.\mathbf{020}...
+\end{equation}
+
+
+\begin{equation}
+    \mathbf{\sigma}^\prime\left(\mathbf{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\right)=\ \left(\frac{\mathbit{e}^{-\mathbit{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\ }}{\left(\mathbf{1}+\mathbit{e}^{-\mathbit{z}_\mathbf{0}^{\left(\mathbf{1}\right)}\ }\right)^\mathbf{2}}\right)\ \ =\ \mathbf{0}.\mathbf{020}...
 \end{equation}
 
 \begin{equation}
@@ -759,7 +775,7 @@ Maintaining the same learning rate of \textbf{$\eta = 0.01$}, the following upda
 \end{equation}
 
 
-Repeating the same method as used for the first partial derivative, the two other partial derivatives are:
+Repeating the same method, the two other partial derivatives are:
 \begin{equation}
 \frac{\partial C}{\partial\mathbf{b}_\mathbf{1}^{\left(\mathbf{1}\right)}}=-\mathbf{0}.\mathbf{505}\ldots
 \end{equation}
@@ -816,15 +832,20 @@ C\left(\ldots\right)= \frac{1}{2}\left(19015.495... - 335000\right)^2 =  4.99 \t
 \end{equation}
 
 
-\section{Further Iterations:}
+\section{Further Iterations}
 
-\subsection{Method and Improving the Model:}
+\subsection{Method and Improving the Model with Keras}
 
-Repeating the same method of applying the multivariate chain rule, the Keras library on Python integrated with TensorFlow was used. The code (as provided in Appendix A) used to train on the data set was modified considerably. The feature vector was instead scaled to values with the range $(0,1)$ so that, say the weights connected to the feature node with higher values (like the lot area) were updated on a similar scale of other features. Furthermore, the ReLU activation function was employed for neurons on both the hidden and output layers. As a piece-wise function, positive weighted sums preserve their values, while negative values are zero. The 'Adam' optimizer with a learning rate of 0.1 was chosen for more efficient learning. ()
+To scale up this process for 4600 training examples, I wrote Python code using the \textit{Keras} library integrated with \textit{TensorFlow}, which apply the fundamentals of gradient descent detailed so far. The code (as provided in Appendix A) used to train on the data set was modified considerably. 
 
-Additionally, the data was split into a shuffled training and validation set. This distinction is made on the basis of optimizing parameter values and the model selection, respectively. ()
+\begin{itemize}
+    \item The feature vector was instead scaled to values with the range $(0,1)$ so that, say the weights connected to the feature node with higher values (like the lot area) were updated on a similar scale of other features.
+    \item The \textbf{ReLU activation function} was employed for neurons on both the hidden and output layers. As a piece-wise function, positive weighted sums preserve their values, while negative values are zero.
+    \item The \codeword{Adam} optimizer with a learning rate of 0.1 was chosen for more efficient learning.
+    \item The loss function used was \codeword{mae} (mean absolute error), explained in the next section.
+\end{itemize}
 
-As detailed in the conclusion, the noise with the loss largely concerned with the former, simplified approach, is addressed by setting the batch size to be 15 rather than 1. This is the number of samples patched and processed at a time, before the weights and biases are updated. () Also, the number of epochs is 400, which is the number of times the model trains on the data by passing through all examples in the data set. 
+Additionally, the data was split into a shuffled training and validation set. This distinction is made on the basis of optimizing parameter values and the model selection, respectively. As detailed in the conclusion, the noise with the loss largely concerned with the former, simplified approach, is addressed by setting the \textbf{batch size} to be 15 rather than 1. This is the number of samples patched and processed at a time, before the weights and biases are updated. Also, the number of \textbf{epochs} is 400, which is the number of times the model trains on the data by passing through all examples in the data set. 
 
 \begin{figure}[h]
     \centering
@@ -834,17 +855,55 @@ As detailed in the conclusion, the noise with the loss largely concerned with th
 \end{figure}
 
 
+\subsection{Results of the Neural Network}
+
+\textit{Matplotlib} was used to visualize the resulting loss in the training and validation data over 400 epochs. The figure above is purposed to model the changes in the value of the cost function, whereby the neural network becomes more ‘optimal’ through ‘learning’, or in computing each iteration to update weights and biases. This is represented by an instantly decreasing value of the cost function before converging. Notably, the rate of decrease of the cost function also decreases with the number of iterations.
+
+\begin{verbatim}
+Epoch 400/400
+197/197 [==============================] - 0s 1ms/step 
+- loss: 307026296832.0000 
+- mae: 176583.6875 
+- mse: 307026296832.0000 
+- val_loss: 71021813760.0000 
+- val_mae: 167710.5312 - val_mse: 71021813760.0000
+Final Root Mean Squared Error (RMSE) =  $420.218
+\end{verbatim}
+
+The \textit{metrics} passed to the \codeword{model.compile} function to prepare the network for training include \codeword{"mse"}, or the mean squared error cost function for m examples in each mini-batch, is represented by 
+
+\begin{equation}
+    C(...) = \frac{1}{2m} \left(\sum_1^m{\left(a_0^{(2)}-y\right)^2} \right)
+\end{equation}
+
+Another metric is \codeword{"mae"}, or the mean absolute error cost function,
+
+\begin{equation}
+    C(...) = \frac{1}{m} \left(\sum_1^m{\left\lvert{a_0^{(2)}-y}\right\lvert} \right)
+\end{equation}
 
 
-\subsection{Interpretation of Data}
+
+
+\subsection{Interpreting Results}
+
+In the second iteration of the original neural network, the changes to the weights and biases to layer (1) became more insignificant. Consistent with the result in equation (83), this problem in machine learning is known as ‘vanishing gradients’, where the increasing value of the weighted sum passed through the sigmoid activation function approaches an output of 1. This corresponds to where the horizontal asymptote (y = 1) in the sigmoid function lies. This means that there are decreased rates of change of the cost with respect to each of the weights and biases to layer (1). Eventually, the only significant adjustments to the weights and biases were for those linked to the output layer neuron (layer 2). 
+
+Moreover, the descent of the cost value would be ‘noisy’ due to stochastic (random) gradient descent. Greater ‘noise’, or a larger average spread of data (variance) from the mean cost value is expected with using this method. Single examples were randomly selected, and the values of the individual houses were not constant for the ‘training’ model. (Rocca, 2018) In the improved, \textbf{mini-batched gradient descent} algorithm whose result is shown in figure 7, the graph depicts minimal noise. However, as the loss converges to 177,000 [dollars$^2$] (the square of the final RMSE), the noise in the data begins to increase slightly. The model still vastly improves the representation of learning over varied housing price values being used. Here, the cost function is modified, as it is computed over $m=15$ shuffled training examples using equation (87).
+
 
 \section{Conclusion}
 
 \subsection{Limitations and Reflection}
 
-Thousands of training examples were used to train the neural network before feeding into the networks’ testing data (where weights and biases are fixed). Unlike the simplified example calculations iterating on single examples, multiple passes through training data are typically considered. With the Keras Tensorflow library, the averages of each batch were taken before the cost function’s average for each batch was considered for updating the weights/biases. (Urtusan et al., 2015) This method was used to address the ‘noisy’ results of stochastic gradient descent. (Le, 2015) Additionally, the computed values for the negative gradients and the local minimum value of the cost function may differ from the global minimum, leaving the possibility of a more accurate model to map features to labels. This was caused by the randomization of the values of weights and biases in the first example before backpropagation. 
+Thousands of training examples are typically used to train neural networks before feeding into the networks’ testing data and validation data (where weights and biases are fixed to hold back from training). Unlike the simplified example calculations iterating on single examples, multiple passes through training data are typically considered. With the \textit{Keras} and \textit{Tensorflow} module, the averages of each batch were taken before the cost function’s average for each batch was considered for updating the weights/biases. (Urtusan et al., 2015) This method was used to address the ‘noisy’ results of stochastic gradient descent. (Le, 2015)
 
-With the finalized weights and biases over 30 training examples, my neural net achieved the aim to both compute the cost values, which on average, decreased with successive iterations. Thus, the network gradually increased its accuracy at predicting housing prices relative to the initial model (before the first iteration). The model, however, excluded other parameters such as location, age, and condition. Also, limited by the number of iterations, the model still wouldn’t accurately model the housing price of unseen housing data, with significant errors and “noise” explained above.
+
+One concern with this algorithm is that the computed values for the negative gradients and the local minimum value of the cost function may differ from the global minimum, leaving the possibility of a more accurate model to map features to labels. This was caused by the randomization of the values of weights and biases in the first example before backpropagation. In the case of the mini-batch algorithm implementation, the continually decreasing result in figure 7 after 400 epochs may indicate under-fitting. The implementation of time-based learning rate schedules may address this result for faster training, where learning rates may decrease with epochs.
+
+
+With the finalized weights and biases over 4600 training examples, my neural net achieved the aim to both compute the cost values, which on average, decreased with successive iterations. Thus, the network gradually increased its accuracy at predicting housing prices relative to the initial model (before the first iteration). The model, however, excluded other parameters such as location, age, and condition. By the limitations posed by the availability of data, the model would not closely model the housing price of unseen housing data, as its loss converges to a relatively high RMSE value.
+
 
 \subsection{Beyond the Exploration}
 Software modules employing deep neural networks are rapidly emerging into various fields. The applications of linear algebra that stem from concepts of matrices and calculus coalesce as the backbone of AI, which vastly enhanced my knowledge and devotion for the wide-ranging field of data science. Software development may be utilized to include this search for homes and their prices in other cities, and similar ML models may be applied to data concerning a wide range of fields including medicine and computer vision.
@@ -886,19 +945,36 @@ Software modules employing deep neural networks are rapidly emerging into variou
 
 \bibitem{nyu} Choromanska, Anna, et al. “The Loss Surfaces of Multilayer Networks.” The Loss Surfaces of Multilayer Networks, NYU: Courant Institute of Mathematical Sciences, 2015,  \url{proceedings.mlr.press/v38/choromanska15.pdf.}
 
+
+
 \bibitem{paul} Dawkins, Paul. “Calculus III - Chain Rule.” Partial Derivatives, 2018,  \url{tutorial.math.lamar.edu/Classes/CalcIII/ChainRule.aspx.}
+
+
 
 \bibitem{heaton} Heaton, Jeff. The Number of Hidden Layers. Heaton Research, 1 June 2017,  \url{www.heatonresearch.com/2017/06/01/hidden-layers.html.}
 
+
+
 \bibitem{columbia} Kriegeskorte, Nikolaus. Neural Network Models and Deep Learning – a Primer for Biologists. Columbia University, 2019,  \url{arxiv.org/pdf/1902.04704.pdf.}
+
+
+
 
 \bibitem{andrew} Ng, Andrew. CS229 Lecture Notes. Stanford University, 2012, \url{ sgfin.github.io/files/notes/CS229_Lecture_Notes.pdf.}
 
+
+
 \bibitem{rocca} Rocca, Joseph. A Gentle Journey from Linear Regression to Neural Networks. Towards Data Science, 13 July 2019, \url{ towardsdatascience.com/a-gentle-journey-from-linear-regression-to-neural-networks-68881590760e.}
+
+
 
 \bibitem{kaggle} Shree. “House Price Prediction.” Kaggle, 26 Aug. 2018,  \url{www.kaggle.com/shree1992/housedata.}
 
+
+
 \bibitem{life3.0} Tegmark, Max. Life 3.0: Being Human in the Age of Artificial Intelligence. Penguin Books, 2018.
+
+
 
 \bibitem{uoft} Urtasun, Raquel, and Rich Zemel. CSC 411: Lecture 10: Neural Networks I. 2015, University of Toronto.
 
@@ -913,7 +989,8 @@ Software modules employing deep neural networks are rapidly emerging into variou
 \begin{appendices}
 
 \section{Code}
-\begin{verbatim}import numpy as np 
+\begin{verbatim}
+import numpy as np 
 import pandas as pd
 import tensorflow as tf 
 from tensorflow import keras
@@ -923,56 +1000,38 @@ from sklearn.utils import shuffle
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn import preprocessing
 from sklearn.model_selection import cross_val_score, KFold
-from sklearn.pipeline import Pipeline
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.metrics import categorical_crossentropy
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.use('tkagg')
 
-#physical_devices = tf.config.experimental.list_physical_devices('GPU')
 
 # February 24, 2019
 
-
-filename = 'data2444.csv'
+filename = 'filename.csv'
 names0 = ['sqft_lot','bedrooms','bathrooms','sqft_living']
-#names00 = ['LotArea','OverallQual','BsmtFinSF1','BsmtFinSF2','BsmtUnfSF','TotalBsmtSF','1stFlrSF','2ndFlrSF','LowQualFinSF','GrLivArea','BsmtFullBath','BsmtHalfBath','FullBath','HalfBath','BedroomAbvGr','KitchenAbvGr','TotRmsAbvGrd','GarageCars','GarageArea','WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea','MiscVal','MoSold','YrSold']
 samples = np.array(pd.read_csv(filename, names=names0, skiprows=[0], header=None)).astype(float)
-
-print(samples)
-print(samples.shape)
-
 
 where_are_NaNs = np.isnan(samples) # replaces NaNs with zeros 
 samples[where_are_NaNs] = float(0)
 
-
 names1 = ['price']
-labels =
-np.array(pd.read_csv(filename, names=names1, skiprows=[0], header=None)).astype(float)
+labels =  np.array(pd.read_csv(filename, names=names1, skiprows=[0], header=None)).astype(float)
 where_are_NaNs = np.isnan(labels)
 labels[where_are_NaNs] = float(0)
 y = labels
 
-print(labels.shape)
-
-
 min_max_scaler = preprocessing.MinMaxScaler()
 X = min_max_scaler.fit_transform(samples.astype(np.float))
 
-X_train, X_test, y_train, y_test 
-=train_test_split(X, y, test_size=0.2, random_state=1)
-X_train, X_val, y_train, y_val =
-train_test_split(X_train, y_train, test_size=0.2, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=1)
 
-print(X_train)
-
-print(samples.shape[1])
+# neural network model (fully/densely connected layers)
 model = Sequential([
     Dense(units=3, input_shape=(samples.shape[1],), activation='relu'),
     Dense(units=1, activation='relu'),])
@@ -980,12 +1039,14 @@ model.summary()
 
 num_epochs = 400
 
+# training
 model.compile(optimizer=Adam(learning_rate=0.1), loss='mse', metrics=['mae', 'mse'])
 
 history = model.fit(X_train, y_train, epochs=num_epochs, batch_size=15, validation_data=(X_val, y_val), shuffle=True)
 
 
 # PLOTTING:
+
 loss_train = history.history['mae']
 loss_val = history.history['val_mae']
 rmse_final = np.sqrt(loss_train[-1])
@@ -1003,7 +1064,5 @@ plt.legend()
 plt.show()
 
 \end{verbatim}
-
 \end{appendices}
-
 \end{document}
