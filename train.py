@@ -21,6 +21,7 @@ mpl.use('tkagg')
 # February 24, 2019
 
 
+
 filename = 'filename.csv'
 names0 = ['sqft_lot','bedrooms','bathrooms','sqft_living']
 samples = np.array(pd.read_csv(filename, names=names0, skiprows=[0], header=None)).astype(float)
